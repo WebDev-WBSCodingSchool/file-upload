@@ -1,6 +1,7 @@
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import express from 'express';
+import cors from 'cors';
 import fileUploader from './middleware/fileUploader.js';
 import ErrorResponse from './utils/ErrorResponse.js';
 import errorHandler from './middleware/errorHandler.js';
@@ -11,6 +12,7 @@ const port = process.env.PORT || 8080;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+app.use(cors({ origin: '*' }));
 app.use('/files', express.static(join(__dirname, 'files')));
 app.post('/file-upload', fileUploader.single('image'), (req, res) => {
   if (!req.file) throw new ErrorResponse('Please upload a file', 400);
